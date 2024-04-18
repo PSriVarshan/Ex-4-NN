@@ -1,8 +1,8 @@
 
-<H3>ENTER YOUR NAME</H3>
-<H3>ENTER YOUR REGISTER NO.</H3>
+<H3>NAME: Sri Varshan P</H3>
+<H3>REGISTER NO. 212222240104</H3>
 <H3>EX. NO.4</H3>
-<H3>DATE:</H3>
+<H3>DATE: 18/04/2024</H3>
 <H1 ALIGN =CENTER>Implementation of MLP with Backpropagation for Multiclassification</H1>
 <H3>Aim:</H3>
 To implement a Multilayer Perceptron for Multi classification
@@ -29,13 +29,17 @@ MLP has the following features:
 
 Ø  Computationally efficient method
 
+
 ![image 10](https://user-images.githubusercontent.com/112920679/198804559-5b28cbc4-d8f4-4074-804b-2ebc82d9eb4a.jpg)
+
 
 3 Distinctive Characteristics of MLP:
 
 Ø  Each neuron in network includes a non-linear activation function
 
+
 ![image](https://user-images.githubusercontent.com/112920679/198814300-0e5fccdf-d3ea-4fa0-b053-98ca3a7b0800.png)
+
 
 Ø  Contains one or more hidden layers with hidden neurons
 
@@ -74,16 +78,21 @@ In the forward pass:
 •       Function signal are computed neuron by neuron
 
 •       Function signal of jth neuron is
-            ![image](https://user-images.githubusercontent.com/112920679/198814313-2426b3a2-5b8f-489e-af0a-674cc85bd89d.png)
-            ![image](https://user-images.githubusercontent.com/112920679/198814328-1a69a3cd-7e02-4829-b773-8338ac8dcd35.png)
-            ![image](https://user-images.githubusercontent.com/112920679/198814339-9c9e5c30-ac2d-4f50-910c-9732f83cabe4.png)
+
+![image](https://user-images.githubusercontent.com/112920679/198814313-2426b3a2-5b8f-489e-af0a-674cc85bd89d.png)
+
+![image](https://user-images.githubusercontent.com/112920679/198814328-1a69a3cd-7e02-4829-b773-8338ac8dcd35.png)
+
+![image](https://user-images.githubusercontent.com/112920679/198814339-9c9e5c30-ac2d-4f50-910c-9732f83cabe4.png)
 
 
 
 If jth neuron is output neuron, the m=mL  and output of j th neuron is
-               ![image](https://user-images.githubusercontent.com/112920679/198814349-a6aee083-d476-41c4-b662-8968b5fc9880.png)
+
+![image](https://user-images.githubusercontent.com/112920679/198814349-a6aee083-d476-41c4-b662-8968b5fc9880.png)
 
 Forward phase begins with in the first hidden layer and end by computing ej(n) in the output layer
+
 ![image](https://user-images.githubusercontent.com/112920679/198814353-276eadb5-116e-4941-b04e-e96befae02ed.png)
 
 
@@ -93,7 +102,9 @@ In the backward pass,
 
 •        it changes the synaptic weight by delta rule
 
+
 ![image](https://user-images.githubusercontent.com/112920679/198814362-05a251fd-fceb-43cd-867b-75e6339d870a.png)
+
 
 <H3>Algorithm:</H3>
 
@@ -116,11 +127,117 @@ Normalize our dataset.
 
 <H3>Program:</H3> 
 
-Insert your code here
+```py
+import sklearn
+import pandas as pd
+from sklearn import preprocessing
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.neural_network import MLPClassifier
+from sklearn.metrics import classification_report, confusion_matrix
+```
+
+```py
+url = 'https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data'
+```
+
+```py
+names = ['sepal-length', 'sepal-width', 'petal-length', 'petal-width', 'Class']
+```
+```py
+irisdata = pd.read_csv(url, names=names)
+```
+```py
+# Takes first 4 columns and assign them to variable "X"
+X = irisdata.iloc[:, 0:4]
+```
+
+```py
+# Takes first 5th columns and assign them to variable "Y". Object dtype refers to strings.
+y = irisdata.select_dtypes(include=[object])
+X.head()
+y.head()
+```
+
+```py
+# y actually contains all categories or classes:
+y.Class.unique()
+```
+
+```py
+# Now transforming categorial into numerical values
+le = preprocessing.LabelEncoder()
+y = y.apply(le.fit_transform)
+y.head()
+```
+```py
+# Now for train and test split (80% of  dataset into  training set and  other 20% into test data)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.20)
+```
+
+```py
+# Feature scaling
+scaler = StandardScaler()
+scaler.fit(X_train)
+X_train = scaler.transform(X_train)
+X_test = scaler.transform(X_test)
+mlp = MLPClassifier(hidden_layer_sizes=(10, 10, 10), max_iter=1000)
+mlp.fit(X_train, y_train.values.ravel())
+predictions = mlp.predict(X_test)
+print(predictions)
+```
+
+```py
+# Last thing: evaluation of algorithm performance in classifying flowers
+print(confusion_matrix(y_test,predictions))
+print(classification_report(y_test,predictions))
+```
+```py
+url = 'https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data'
+```
+
+```py
+arr = ['SepalLength', 'SepalWidth', 'PetalLength', 'PetalWidth', 'Species']
+```
+```py
+df = pd.read_csv(url, names=arr)
+print(df.head())
+```
+
+```py
+a = df.iloc[:, 0:4]
+b = df.select_dtypes(include=[object])
+b = df.iloc[:,4:5]
+```
+
+```py
+training_a, testing_a, training_b, testing_b = train_test_split(a, b, test_size = 0.25)
+```
+```py
+myscaler = StandardScaler()
+myscaler.fit(training_a)
+```
+```py
+training_a = myscaler.transform(training_a)
+training_a = myscaler.transform(training_a)
+```
+```py
+m1 = MLPClassifier(hidden_layer_sizes=(12, 13, 14), activation='relu', solver='adam', max_iter=2500)
+m1.fit(training_a, training_b.values.ravel())
+```
+```py
+predicted_values = m1.predict(testing_a)
+```
+```py
+print(confusion_matrix(testing_b,predicted_values))
+print(classification_report(testing_b,predicted_values))
+```
 
 <H3>Output:</H3>
 
-Show your results here
+![image](https://github.com/PSriVarshan/Ex-4-NN/assets/114944059/f62288a4-d88f-46a2-9d7a-a22cf6689382)
+
+![image](https://github.com/PSriVarshan/Ex-4-NN/assets/114944059/5e11a0aa-9f87-4542-84c4-e3e15b6e3687)
 
 <H3>Result:</H3>
 Thus, MLP is implemented for multi-classification using python.
